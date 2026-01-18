@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Apartment {
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  phone     String
+  email     String?
+  lineId    String?
+  taxCode   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RoomType {
+  id        String   @id @default(cuid())
+  name      String
+  price     Int
+  remark    String?
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rooms     Room[]
+}
+
+model Room {
+  id          String    @id @default(cuid())
+  name        String
+  tolowerName String
+  totalLevel  Int
+  totalRoom   Int
+  roomTypeId  String
+  roomType    RoomType  @relation(fields: [roomTypeId], references: [id])
+  remark      String?
+  status      String    @default("active")
+  statusEmpty String    @default("empty")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  bookings    Booking[]
+}
+
+model Booking {
+  id              String           @id @default(cuid())
+  customerName    String
+  customerPhone   String
+  customerAddress String?
+  cardId          String?
+  gender          String           @default("male")
+  roomId          String
+  room            Room             @relation(fields: [roomId], references: [id])
+  remark          String?
+  status          String           @default("active")
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  stayAt          DateTime
+  stayTo          DateTime?
+  deposit         Int              @default(0)
+  electricitylog  Electricitylog[]
+  waterlog        Waterlog[]
+}
+
+model Electricitylog {
+  id             String   @id @default(cuid())
+  bookingId      String
+  booking        Booking  @relation(fields: [bookingId], references: [id])
+  electricityInt Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Waterlog {
+  id        String   @id @default(cuid())
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  waterInt  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MoneyAdd {
+  id        String   @id @default(cuid())
+  name      String
+  amount    Int
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WaterAndElectricityPrice {
+  id                      String   @id @default(cuid())
+  waterPricePerUnit       Int
+  electricityPricePerUnit Int
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+}
