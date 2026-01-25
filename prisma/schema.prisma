@@ -37,19 +37,23 @@ model RoomType {
 }
 
 model Room {
-  id          String    @id @default(cuid())
-  name        String
-  tolowerName String
-  totalLevel  Int
-  totalRoom   Int
-  roomTypeId  String
-  roomType    RoomType  @relation(fields: [roomTypeId], references: [id])
-  remark      String?
-  status      String    @default("active")
-  statusEmpty String    @default("empty")
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  bookings    Booking[]
+  id                String         @id @default(cuid())
+  name              String
+  tolowerName       String
+  totalLevel        Int
+  totalRoom         Int
+  roomTypeId        String
+  roomType          RoomType       @relation(fields: [roomTypeId], references: [id])
+  remark            String?
+  status            String         @default("active")
+  statusEmpty       String         @default("empty")
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  bookings          Booking[]
+  bills             Bill[]
+  fromRoomTransfers RoomTransfer[] @relation("fromRoom")
+  toRoomTransfers   RoomTransfer[] @relation("toRoom")
+  moveOuts          MoveOuts[]
 }
 
 model Booking {
@@ -70,6 +74,9 @@ model Booking {
   deposit         Int              @default(0)
   electricitylog  Electricitylog[]
   waterlog        Waterlog[]
+  bills           Bill[]
+  roomTransfers   RoomTransfer[]
+  moveOuts        MoveOuts[]
 }
 
 model Electricitylog {
@@ -105,4 +112,73 @@ model WaterAndElectricityPrice {
   electricityPricePerUnit Int
   createdAt               DateTime @default(now())
   updatedAt               DateTime @updatedAt
+}
+
+model Bill {
+  id              String     @id @default(cuid())
+  roomId          String
+  room            Room       @relation(fields: [roomId], references: [id])
+  bookingId       String
+  booking         Booking    @relation(fields: [bookingId], references: [id])
+  billDate        DateTime   @default(now())
+  dueDate         DateTime?
+  paymentDate     DateTime?
+  totalAmount     Int
+  waterUnit       Int
+  electricityUnit Int
+  waterCost       Int
+  electricityCost Int
+  roomPrice       Int
+  additionalCost  Int        @default(0)
+  lateFee         Int        @default(0)
+  status          String     @default("pending")
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  billItems       BillItem[]
+}
+
+model BillItem {
+  id        String   @id @default(cuid())
+  billId    String
+  bill      Bill     @relation(fields: [billId], references: [id])
+  name      String
+  amount    Int
+  type      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RoomTransfer {
+  id           String    @id @default(cuid())
+  fromRoomId   String
+  toRoomId     String
+  fromRoom     Room      @relation("fromRoom", fields: [fromRoomId], references: [id])
+  toRoom       Room      @relation("toRoom", fields: [toRoomId], references: [id])
+  bookingId    String
+  booking      Booking   @relation(fields: [bookingId], references: [id])
+  transferDate DateTime  @default(now())
+  reason       String
+  transferFee  Int       @default(0)
+  status       String    @default("pending")
+  approveBy    String?
+  approveAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model MoveOuts {
+  id              String    @id @default(cuid())
+  roomId          String
+  room            Room      @relation(fields: [roomId], references: [id])
+  bookingId       String
+  booking         Booking   @relation(fields: [bookingId], references: [id])
+  moveOutDate     DateTime  @default(now())
+  reason          String?
+  depositReturn   Int       @default(0)
+  outstandingFees Int       @default(0)
+  status          String    @default("pending")
+  approveBy       String?
+  approveAt       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Bill" ADD COLUMN     "lateFee" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "paymentDate" TIMESTAMP(3);

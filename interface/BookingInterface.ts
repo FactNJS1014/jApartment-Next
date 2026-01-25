@@ -2,6 +2,7 @@ import { ElectricityLogInterface } from "./ElectricityLogInterface";
 import { WaterLogInterface } from "./WaterLogInterface";
 
 export interface BookingInterface {
+  id: string;
   customerName: string;
   customerPhone: string;
   customerAddress: string;

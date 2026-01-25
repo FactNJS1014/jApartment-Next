@@ -7,17 +7,17 @@ export default function Sidebar() {
   const pathname = usePathname();
   const sidebarMenu = [
     {
-      label: "Apartment",
+      label: "ข้อมูลหอพัก",
       href: "/home/apartment",
       icon: "fa fa-home",
     },
     {
-      label: "Room Type",
+      label: "ประเภทห้องพัก",
       href: "/home/room-type",
       icon: "fa fa-bed",
     },
     {
-      label: "Room",
+      label: "ห้องพัก",
       href: "/home/room",
       icon: "fa fa-box",
     },
@@ -27,9 +27,29 @@ export default function Sidebar() {
       icon: "fa fa-database",
     },
     {
+      label: "บันทึกมิเตอร์น้ำ-ไฟ",
+      href: "/home/water-and-electricity-log",
+      icon: "fa fa-note-sticky",
+    },
+    {
       label: "ราคาค่าน้ำและค่าไฟ",
       href: "/home/water-and-electricity-price",
       icon: "fa fa-wand-magic-sparkles",
+    },
+    {
+      label: "รายการบิล",
+      href: "/home/bills",
+      icon: "fa fa-file-invoice",
+    },
+    {
+      label: "รายการย้ายห้อง",
+      href: "/home/room-transfer",
+      icon: "fa fa-arrow-right-arrow-left",
+    },
+    {
+      label: "รายการย้ายออก",
+      href: "/home/move-outs",
+      icon: "fa fa-arrow-right-from-bracket",
     },
   ];
 
