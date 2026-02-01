@@ -159,6 +159,37 @@ export default function RoomTransferPage() {
     }
   };
 
+  const handleDelete = async (transferId: string) => {
+    const result = await Swal.fire({
+      icon: "question",
+      title: "ยืนยันการลบ",
+      text: "คุณต้องการลบรายการนี้หรือไม่?",
+      showCancelButton: true,
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    });
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`/api/room-transfer/${transferId}`);
+        Swal.fire({
+          icon: "success",
+          title: "สำเร็จ",
+          text: "ลบรายการสำเร็จ",
+          timer: 2000,
+          timerProgressBar: true,
+        });
+        fetchTransfer();
+        fetchRoom();
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด",
+          text: (error as Error).message,
+        });
+      }
+    }
+  };
+
   return (
     <div className="p-6">
       <div className="flex flex-col justify-between items-left mb-8 gap-4">
@@ -253,7 +284,10 @@ export default function RoomTransferPage() {
                             <i className="fa-solid fa-circle-check"></i> ยืนยัน
                           </Button>
                         )}
-                        <Button className="bg-red-500 hover:bg-red-600">
+                        <Button
+                          className="bg-red-500 hover:bg-red-600"
+                          onClick={() => handleDelete(transfer.id)}
+                        >
                           <i className="fa-solid fa-circle-xmark"></i> ยกเลิก
                         </Button>
                       </div>

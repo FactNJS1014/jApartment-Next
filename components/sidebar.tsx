@@ -7,6 +7,11 @@ export default function Sidebar() {
   const pathname = usePathname();
   const sidebarMenu = [
     {
+      label: "Dashboard",
+      href: "/home/dashboard",
+      icon: "fa fa-bar-chart",
+    },
+    {
       label: "ข้อมูลหอพัก",
       href: "/home/apartment",
       icon: "fa fa-home",

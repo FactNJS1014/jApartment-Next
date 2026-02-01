@@ -78,3 +78,56 @@ export async function PUT(
     return NextResponse.json({ error: "เกิดข้อผิดพลาด" }, { status: 500 });
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    const { id } = await params;
+    const transfer = await prisma.roomTransfer.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!transfer) {
+      return NextResponse.json({ error: "ไม่พบข้อมูล" }, { status: 404 });
+    }
+    await prisma.$transaction(async (tx) => {
+      if (transfer.status === "completed") {
+        await tx.room.update({
+          where: {
+            id: transfer.fromRoomId,
+          },
+          data: {
+            statusEmpty: "no",
+          },
+        });
+        await tx.room.update({
+          where: {
+            id: transfer.toRoomId,
+          },
+          data: {
+            statusEmpty: "empty",
+          },
+        });
+        await tx.booking.update({
+          where: {
+            id: transfer.bookingId,
+          },
+          data: {
+            roomId: transfer.fromRoomId,
+          },
+        });
+        await tx.roomTransfer.delete({
+          where: {
+            id: id,
+          },
+        });
+      }
+    });
+    return NextResponse.json({});
+  } catch (error) {
+    return NextResponse.json({ error: "เกิดข้อผิดพลาด" }, { status: 500 });
+  }
+}
