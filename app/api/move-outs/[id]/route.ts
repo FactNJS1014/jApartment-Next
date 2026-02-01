@@ -12,7 +12,7 @@ const moveOutSchema = z.object({
 
 export const PUT = async (
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) => {
   try {
     const { id } = await params;
@@ -66,7 +66,7 @@ export const PUT = async (
 
 export const DELETE = async (
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) => {
   try {
     const { id } = await params;
