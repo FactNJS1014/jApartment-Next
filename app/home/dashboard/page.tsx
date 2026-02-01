@@ -89,11 +89,12 @@ export default function Dashboard() {
       className="min-h-screen bg-linear-to-br from-purple-50 
         via-blue-50 to-indigo-100 p-6"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl">
         <h1
           className="text-4xl font-bold text-transparent bg-clip-text 
                     bg-linear-to-r from-purple-600 to-blue-900 mb-8"
         >
+          <i className="fa fa-tachometer-alt bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text mr-2"></i>
           Dashboard
         </h1>
       </div>
@@ -229,7 +230,7 @@ export default function Dashboard() {
             className="text-xl font-bold text-gray-800 mb-4 flex 
                         items-center gap-2"
           >
-            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
             เพศผู้เช่า
           </h2>
           <div className="h-80">

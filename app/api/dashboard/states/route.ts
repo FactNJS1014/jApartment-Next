@@ -29,8 +29,8 @@ export async function GET() {
 
     // 2. Room Occupancy Pie Chart
     const occupancyData = [
-      { name: "มีผู้พัก", value: occupiedRoomsCount, color: "#3b82f6" },
-      { name: "ห้องว่าง", value: emptyRoomsCount, color: "#94a3b8" },
+      { name: "มีผู้พัก", value: occupiedRoomsCount, color: "#38b000" },
+      { name: "ห้องว่าง", value: emptyRoomsCount, color: "#979dac" },
     ];
 
     // 3. Room Type Donut Chart
