@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { roomTypeId: string } }
+  { params }: { params: Promise<{ roomTypeId: string }> },
 ) {
   try {
     const { roomTypeId } = await params;
@@ -44,7 +44,7 @@ export async function GET(
     console.log(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
